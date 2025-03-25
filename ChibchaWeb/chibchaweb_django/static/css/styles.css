@@ -1,0 +1,47 @@
+.usuario-btn {
+    background-color: #6ef1ff98;
+    color: rgb(0, 0, 0);
+    border: cornflowerblue;
+    cursor: pointer;
+}
+.container1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0px; 
+   }
+
+.usuario-img {
+    width: 20px; /* Tamaño del logotipo */
+    height: 20px;
+}
+
+/* Estilos CSS personalizados para centrar el banner con imagen de fondo */
+body {
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.contenido{
+    text-align: center;
+}
+.banner {
+    background-image: url('../images/sugamuxiM.jpg');
+    height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    padding: 20px;
+}
+.banner h1 {
+    font-size: 36px;
+}
+.banner p {
+    font-size: 18px;
+}

@@ -1,0 +1,94 @@
+{% extends 'index.html' %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Ticket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Detalles del Ticket</h2>
+         <!-- Agregar los dos select -->
+        
+    
+
+
+        <div class="card">
+            <div class="card-header">Número de Ticket: {{ticket.pk}}</div>
+            <div class="card-body">
+                <p><strong>Asunto:</strong> {{ticket.titulo}}</p>
+                <p><strong>Descripción:</strong> {{ticket.descripcion}}</p>
+                <form method="post" action="{%url "consultarTicketsEmp" ticket.pk%}">
+                    {% csrf_token %}
+                    <p><strong>Estado:</strong> Completado/En proceso/No completado</p>
+                    <input id="ticket" name="ticket" placeholder="Estado">
+                    <button type="submit" class="btn btn-primary">Responder ticket</button>
+                </form>
+                
+            </div>
+            
+        </div>
+
+        <!-- Sección de Chat -->
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Función para agregar un nuevo mensaje al chat
+        function agregarNuevoMensaje(mensaje) {
+            const chatElement = document.getElementById('chat');
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerHTML = `<strong>Usuario:</strong> ${mensaje}`;
+            chatElement.insertBefore(listItem, chatElement.firstChild); // Agregar mensaje al principio del chat
+        }
+
+        // Manejar el envío del formulario para nuevo mensaje (simulado)
+        document.querySelector('.btn-primary').addEventListener('click', function () {
+            const nuevoMensajeInput = document.getElementById('nuevoMensaje');
+            const nuevoMensaje = nuevoMensajeInput.value.trim();
+
+            if (nuevoMensaje !== '') {
+                agregarNuevoMensaje(nuevoMensaje);
+                nuevoMensajeInput.value = ''; // Limpiar el campo después de enviar el mensaje
+            }
+        });
+
+        // Habilitar o deshabilitar el segundo select basado en si se seleccionó un cliente en el primero
+        document.getElementById('clienteSelect').addEventListener('change', function () {
+            const ticketClienteSelect = document.getElementById('ticketClienteSelect');
+            ticketClienteSelect.disabled = this.value === ''; // Deshabilitar si no se ha seleccionado ningún cliente
+        });
+
+        document.getElementById('marcarCompletadoBtn').addEventListener('click', function () {
+        // Mostrar un modal de confirmación utilizando SweetAlert
+        Swal.fire({
+            title: '¿Seguro que desea marcar la tarea como completada?',
+            text: 'Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, marcar como completado'
+        }).then((result) => {
+            // Si el usuario confirma la acción
+            if (result.isConfirmed) {
+                //Cuando le de en confirmar (se puede añadir que recargue la pagina)
+                Swal.fire('Ticket marcada como completada', '', 'success');
+            }
+        });
+    });
+
+    </script>
+</body>
+
+</html>
+{% endblock %}  

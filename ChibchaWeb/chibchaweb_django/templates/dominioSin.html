@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{%static 'css/dominio.css'%}" type="text/css">
+  <title>Dominios</title>
+</head>
+
+<body>
+  <header class="header">
+    <h1>Consulta de Dominio</h1>
+  </header>
+  <!-- <section class="banner">
+    <h2>Cyber Oferta Limitada - ¡Aprovecha Hoy!</h2>
+  </section> -->
+  <section class="content">
+    <h2>Comprar dominios en Colombia en minutos</h2>
+    <p>Encuentra dominios disponibles en nuestro buscador
+      Ofrecemos una variedad de extensiones populares para dominios:</p>
+    <div class="search">
+
+      <input id="nombreDominio" name="nombreDominio" type="text" placeholder="Escribe tu dominio aquí">
+      <button onclick="pasarValor(this.id)">Buscar</button></a>
+      <!-- agregar Tabla  -->
+    </div>
+
+    {% if data %}
+      <table>
+        <tr>
+          <th>Dominio</th>
+          <th>Extensión</th>
+          <th>Precio Mensual</th>
+          <th>En Uso</th>
+        </tr>
+        {% if dominioObj != "_" %}
+        {% for extension, flag in data %}
+        <tr>
+          <td id="{{extension.pk}}d">{{dominioObj}}</td>
+          <td id="{{extension.pk}}e">{{extension.extensionDominio}}</td>
+          <td id="{{extension.pk}}">COP {{extension.precioExtension}}</td>
+          {% if flag %}
+          <td>Sí</td>
+          {% else %}
+          <td>No</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+      </table>
+    {% else %}
+      <div class="call-to-action">
+        <h2>No hay dominios disponibles para consultar</h2>
+      </div>
+    {% endif %}
+    
+    </div>
+    <div class="call-to-action">
+      <h2>¡Ingresa y Registra tu dominio ahora, comienza tu aventura en línea!</h2>
+      <p>Aprovecha nuestras ofertas limitadas y asegura tu presencia en la web hoy mismo. ¡No te lo pierdas!</p>
+    </div>
+  </section>
+  <div class="cookie-banner">
+    <p>Utilizamos cookies para mejorar tu experiencia en nuestra web. Al continuar navegando, aceptas el uso de cookies.
+      Para más información, consulta nuestra política de cookies.</p>
+    <button>Aceptar</button>
+  </div>
+</body>
+
+<script src="{%static 'js/dominio.js'%}" type="text/javascript"></script>
+<script>
+  function pasarValor() {
+    let valor = document.getElementById('nombreDominio').value;
+
+    var url = "{% url 'dominioSinRegistro' 'valor' %}";
+
+    if (valor != "") {
+      url = url.replace('valor', valor);
+    } else {
+      url = url.replace('valor', "_");
+    }
+
+    window.location.href = url;
+
+  }
+
+</script>
+
+</html>
+{% endblock %}

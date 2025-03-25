@@ -1,0 +1,55 @@
+{% extends 'index.html' %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Ticket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Detalles del Ticket</h2>
+        <div class="card">
+            <div class="card-header">{{Ticket.titulo}} {{Ticket.ticketId}}</div>
+            <div class="card-body">
+                
+                <p><strong>Descripción:</strong> {{Ticket.descripcion}}</p>
+                <p><strong>Estado:</strong> {{Ticket.estado}}</p>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Función para agregar un nuevo mensaje al chat
+        function agregarNuevoMensaje(mensaje) {
+            const chatElement = document.getElementById('chat');
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerHTML = `<strong>Usuario:</strong> ${mensaje}`;
+            chatElement.insertBefore(listItem, chatElement.firstChild); // Agregar mensaje al principio del chat
+        }
+
+        // Manejar el envío del formulario para nuevo mensaje (simulado)
+        document.querySelector('.btn-primary').addEventListener('click', function () {
+            const nuevoMensajeInput = document.getElementById('nuevoMensaje');
+            const nuevoMensaje = nuevoMensajeInput.value.trim();
+
+            if (nuevoMensaje !== '') {
+                agregarNuevoMensaje(nuevoMensaje);
+                nuevoMensajeInput.value = ''; // Limpiar el campo después de enviar el mensaje
+            }
+        });
+    </script>
+</body>
+
+</html>
+{% endblock %}

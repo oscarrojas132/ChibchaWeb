@@ -1,0 +1,203 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{%static 'css/dominio.css'%}" type="text/css">
+  <title>Dominios</title>
+</head>
+
+<body>
+  <header class="header">
+    <h1>Registro de Dominio</h1>
+  </header>
+  <!-- <section class="banner">
+    <h2>Cyber Oferta Limitada - ¡Aprovecha Hoy!</h2>
+  </section> -->
+  <section class="content">
+    <h2>Comprar dominios en Colombia en minutos</h2>
+    <p>Encuentra dominios disponibles en nuestro buscador y registra el dominio ideal para tu proyecto en minutos.
+      Ofrecemos una variedad de extensiones populares para dominios:</p>
+    <div class="search">
+
+      <input id="nombreDominio" name="nombreDominio" type="text" placeholder="Escribe tu dominio aquí">
+      <button onclick="pasarValor()">Buscar</button></a>
+      <!-- agregar Tabla  -->
+    </div>
+    {% if data %}
+      <table>
+        <tr>
+          <th>Dominio</th>
+          <th>Extensión</th>
+          <th>Precio Mensual</th>
+          <th>En Uso</th>
+          <th>Comprar Dominio</th>
+        </tr>
+        {% if dominioObj != "_" %}
+        {% for extension, flag in data %}
+        <tr>
+          <td id="{{extension.pk}}d">{{dominioObj}}</td>
+          <td id="{{extension.pk}}e">{{extension.extensionDominio}}</td>
+          <td id="{{extension.pk}}">COP {{extension.precioExtension}}</td>
+          {% if flag %}
+          <td>Sí</td>
+          <td><button class="btn" disabled> Dominio en uso</button></td>
+          {% else %}
+          <td>No</td>
+          <td><button class="btn" id="{{extension.pk}}" onclick="enviarDominio(this.id)"> Comprar </button></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+      </table>
+    {% else %}
+      <div class="call-to-action">
+        <h2>Ingrese el nombre de dominio que busca para obtener las opciones disponibles</h2>
+      </div>
+    {% endif %}
+    </div>
+
+    {% if populares and populares|length >= 3 and dominioObj != "_" %}
+      <h3>Extensiones de Dominio Populares:</h3>
+      <div class="options">
+        {% for popular in populares|slice:":3" %}
+          <div class="option">
+            <p>{{popular.extensionDominio}}</p>
+            <span>Desde COP {{popular.precioExtension}}</span>
+            <p>por mes</p>
+            <button class="btn" id="{{popular.pk}}" onclick="enviarDominio(this.id)"> Comprar </button></td>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="call-to-action">
+      <h2>¡Registra tu dominio ahora y comienza tu aventura en línea!</h2>
+      <p>Aprovecha nuestras ofertas limitadas y asegura tu presencia en la web hoy mismo. ¡No te lo pierdas!</p>
+    </div>
+  </section>
+  <div class="cookie-banner">
+    <p>Utilizamos cookies para mejorar tu experiencia en nuestra web. Al continuar navegando, aceptas el uso de cookies.
+      Para más información, consulta nuestra política de cookies.</p>
+    <button>Aceptar</button>
+  </div>
+  
+  <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmacionModalLabel">Confirmación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Tu tarjeta ha sido aceptada. Por favor selecciona el número de meses:</p>
+          <input type="number" id="cantidadMeses" placeholder="Cantidad de meses" min="1" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnRegistrarModal">Registrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="errorModalMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnSalir"></button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script src="{%static 'js/dominio.js'%}" type="text/javascript"></script>
+<script>
+  function pasarValor() {
+    let valor = document.getElementById('nombreDominio').value;
+
+    var url = "{% url 'dominiosDisponibles' 'valor' '0' %}";
+
+    if (valor != "") {
+      url = url.replace('valor', valor);
+    } else {
+      url = url.replace('valor', "_");
+    }
+
+    window.location.href = url;
+
+  }
+
+  function enviarDominio(id) {
+    var flag = false;
+    if ("{{ tarjeta }}" == "True"){
+	flag = true;
+    }
+    if(flag){
+      $('#confirmacionModal').modal('show');
+
+      $('#btnRegistrarModal').on('click', function() {
+        var cantidadMeses = $('#cantidadMeses').val();
+        
+        if (cantidadMeses !== '') {
+          $.ajax({
+            url: '/clientes/registrarDominio',
+            method: 'POST',
+            data: {
+              nombreDominio: document.getElementById(id + "d").innerHTML,
+              extension: document.getElementById(id + "e").innerHTML,
+              meses: cantidadMeses
+            },
+            success: function (response) {
+              var url = "{% url 'dominiosDisponibles' 'valor1' '2' %}";
+              url = url.replace('valor1', response.dominio);
+              url = url.replace('2', response.flag);
+              window.location.href = url;
+            }
+          });
+        } else {
+          alert('Por favor, ingresa una cantidad válida de meses.');
+        }
+      });
+    }else{
+      error()
+    } 
+  }
+  
+  function error() {
+  $('#errorModal').modal('show');
+  $('#errorModalTitle').text('Error');
+  $('#errorModalMessage').text('La información de tu tarjeta de crédito no es válida. Porfavor actualiza tu tarjeta en tu panel de control');
+  $('#btnSalir').text('Salir');
+}
+
+</script>
+
+{% if flag %}
+  <script>
+    alert(
+      "NO SE PUDO REGISTRAR EL DOMINIO YA QUE OTRO CLIENTE LO HA OBTENIDO ANTES QUE USTED"
+    );
+  </script>
+{% endif %}
+
+</html>
+{% endblock %}

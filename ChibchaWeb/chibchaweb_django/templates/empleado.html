@@ -1,0 +1,69 @@
+{% extends 'index.html' %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Informacion del Empleado</title>
+    <!-- Agrega aquí los enlaces a los archivos CSS de Bootstrap y tu propio CSS personalizado si lo tienes -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Sección de Información del Empleado -->
+      <div class="col-md-12">
+        <div class="card m-4">
+          <div class="card-header">Información del Empleado</div>
+          <div class="card-body">
+            <p><strong>Nombre: </strong>{{empleado.nombreEmpleado}}</p>
+            <p><strong>Cargo: </strong>{{empleado.cargoEmpleado}}</p>
+            <p>
+              <strong>Fecha de Nacimiento: </strong>{{empleado.fechaNacimientoEmpleado}}
+            </p>
+            <p><strong>Teléfono: </strong>{{empleado.telefonoEmpleado}}</p>
+            <p>
+              <strong>Inicio de Contrato: </strong>{{empleado.inicioContrato}}
+            </p>
+            <div class="container mt-3">
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <a  class="btn btn-primary" href="{% url 'editarEmpleado' empleado.usuario_id %}">Actualizar Información </a>
+                  <a href="{% url 'cerrarSesion' %}" class="btn btn-danger">Cerrar Sesión</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Sección de Tickets Asignados -->
+      <div class="col-md-12">
+        <div class="card m-4">
+          <div class="card-header">Tickets Asignados</div>
+          <div class="card-body">
+            <ul>
+              {% for ticket in tickets  %}
+              <a href="{%url "consultarTicketsEmp" ticket.pk%}">
+              <li class="list-group-item">
+                <h5 class="card-title">{{ticket.titulo}}</h5>  
+              </li>
+              </a>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+{% endblock %}
