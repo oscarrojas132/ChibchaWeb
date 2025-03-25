@@ -1,5 +1,7 @@
 # ChibchaWeb
 
+![Logo de ChibchaWeb](ChibchaWeb/media/archivos/logo.jpg)
+
 ChibchaWeb es una aplicación web desarrollada con Django que gestiona diferentes módulos como Cliente, Distribuidor y Empleado. Este proyecto está diseñado para facilitar la administración de datos y procesos relacionados con estas entidades.
 
 ## Estructura del Proyecto
@@ -56,7 +58,7 @@ Antes de ejecutar la aplicación, asegúrate de tener instalados los siguientes 
 1. Clona este repositorio:
 
    ```bash
-   git clone https://github.com/tu_usuario/ChibchaWeb.git
+   git clone https://github.com/oscarrojas132/ChibchaWeb.git
    cd ChibchaWeb
 
 2. Crea un entorno virtual e instálalo:
@@ -92,3 +94,10 @@ Para ejecutar los tests, usa el siguiente comando:
     ```bash
     python manage.py test
     
+## Capturas de Pantalla
+
+### Página Principal
+![Página principal](ChibchaWeb/media/archivos/Captura%20de%20pantalla%202025-03-25%20095230.png)
+
+### Panel de Control de un Usuario
+![Panel de administración](/ChibchaWeb/media/archivos/Captura%20de%20pantalla%202025-03-25%20100204.png)
